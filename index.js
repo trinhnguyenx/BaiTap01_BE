@@ -41,7 +41,7 @@ app.get("/user/:id", (req, res) => {
 app.put(
   "/user/:id",
   (req, res, next) => {
-    validate(req.body, res, next);
+    validate(req, res, next);
   },
   (req, res) => {
     const id = req.params.id;
@@ -60,7 +60,7 @@ app.put(
 app.post(
   "/user",
   (req, res, next) => {
-    validate(req.body, res, next);
+    validate(req, res, next);
   },
   (req, res) => {
     const user = {
