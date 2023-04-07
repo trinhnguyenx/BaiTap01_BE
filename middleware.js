@@ -1,11 +1,9 @@
 function validate(req, res, next) {
-  const fullname = req.body.fullname;
-  if (/\d+/.test(fullname)) {
-    return res.status(400).json({ message: "Tên không hợp lệ" });
+    const { fullname, age } = req.body;
+    if (/^[^0-9]+$/.test(fullname) && age >= 0) {
+      next();
+    } else {
+      res.status(400).send({ message: 'Invalid data' });
+    }
   }
-  if (req.body.age < 0) {
-    return res.status(400).json({ message: "tuoi khong duoc be hơn 0" });
-  }
-  next();
-}
 module.exports = validate;
