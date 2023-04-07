@@ -38,7 +38,12 @@ app.get("/user/:id", (req, res) => {
 });
 
 // update theo id
-app.put("/user/:id",(req, res, next) => {validate(req.body, res, next)},(req, res) => {
+app.put(
+  "/user/:id",
+  (req, res, next) => {
+    validate(req.body, res, next);
+  },
+  (req, res) => {
     const id = req.params.id;
     const index = data.findIndex((item) => item.id === parseInt(id));
     if (index === -1) {
@@ -52,7 +57,12 @@ app.put("/user/:id",(req, res, next) => {validate(req.body, res, next)},(req, re
   }
 );
 //create new data
-app.post( "/user",(req, res, next) => {validate(req.body, res, next)},(req, res) => {
+app.post(
+  "/user",
+  (req, res, next) => {
+    validate(req.body, res, next);
+  },
+  (req, res) => {
     const user = {
       id: data[data.length - 1].id + 1,
       fullname: req.body.fullname,
@@ -77,5 +87,5 @@ app.delete("/user/:id", (req, res) => {
 });
 
 app.listen(port, function () {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Loading in ${port}`);
 });
