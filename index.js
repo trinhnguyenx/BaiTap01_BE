@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const port = 3000;
-const Validate = require("./middleware");
+const validate = require("./middleware");
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
@@ -38,12 +38,7 @@ app.get("/user/:id", (req, res) => {
 });
 
 // update theo id
-app.put(
-  "/user/:id",
-  (req, res, next) => {
-    Validate(req.body, res, next);
-  },
-  (req, res) => {
+app.put("/user/:id",(req, res, next) => {validate(req.body, res, next)},(req, res) => {
     const id = req.params.id;
     const index = data.findIndex((item) => item.id === parseInt(id));
     if (index === -1) {
@@ -57,12 +52,7 @@ app.put(
   }
 );
 //create new data
-app.post(
-  "/user",
-  (req, res, next) => {
-    Validate(req.body, res, next);
-  },
-  (req, res) => {
+app.post( "/user",(req, res, next) => {validate(req.body, res, next)},(req, res) => {
     const user = {
       id: data[data.length - 1].id + 1,
       fullname: req.body.fullname,
