@@ -31,7 +31,7 @@ app.get("/user/:id", (req, res) => {
   const id = req.params.id;
   const result = data.find((item) => item.id === parseInt(id)); // first
   if (!result) {
-    res.status(404).send("Record not found");
+    res.status(404).send("Error");
   } else {
     res.send(result);
   }
@@ -47,7 +47,7 @@ app.put(
     const id = req.params.id;
     const index = data.findIndex((item) => item.id === parseInt(id));
     if (index === -1) {
-      res.status(404).send("Record not found");
+      res.status(404).send("Error");
     } else {
       data[index].fullname = req.body.fullname || data[index].fullname;
       data[index].gender = req.body.gender || data[index].gender;
@@ -79,7 +79,7 @@ app.delete("/user/:id", (req, res) => {
   const index = data.findIndex((item) => item.id === parseInt(id));
   if (index === -1) {
     // trả về -1 không có phần tử nào thỏa mãn
-    res.status(404).send("Record not found");
+    res.status(404).send("Error");
   } else {
     data.splice(index, 1); // xóa 1 phần tử tại vị trí index
     res.send(data);
