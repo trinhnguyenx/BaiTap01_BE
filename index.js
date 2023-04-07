@@ -2,8 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const port = 3000;
-const Validate = require("./middleware.js/Validate");
-
+const Validate = require("./middleware");
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
@@ -39,18 +38,24 @@ app.get("/user/:id", (req, res) => {
 });
 
 // update theo id
-app.put("/user/:id", (req, res, next) => {Validate(req.body, res, next); }, (req,res) => {
-  const id = req.params.id;
-  const index = data.findIndex((item) => item.id === parseInt(id));
-  if (index === -1) {
-    res.status(404).send("Record not found");
-  } else {
-    data[index].fullname = req.body.fullname || data[index].fullname;
-    data[index].gender = req.body.gender || data[index].gender;
-    data[index].age = req.body.age || data[index].age;
-    res.send(data[index]);
+app.put(
+  "/user/:id",
+  (req, res, next) => {
+    Validate(req.body, res, next);
+  },
+  (req, res) => {
+    const id = req.params.id;
+    const index = data.findIndex((item) => item.id === parseInt(id));
+    if (index === -1) {
+      res.status(404).send("Record not found");
+    } else {
+      data[index].fullname = req.body.fullname || data[index].fullname;
+      data[index].gender = req.body.gender || data[index].gender;
+      data[index].age = req.body.age || data[index].age;
+      res.send(data[index]);
+    }
   }
-});
+);
 //create new data
 app.post(
   "/user",
