@@ -3,7 +3,7 @@ const app = express();
 var Connection = require("./database");
 
 function getUser(id, callback) {
-  connection.query(
+  Connection.query(
     "select * from  where ID_Users = ?",
     [id],
     function (err, result) {
@@ -26,7 +26,7 @@ app.get("/", (req, res) => {
 app.post("/", (req, res) => {
   Connection.query(
     "insert into users (Name, Gender, Age) values (? , ? , ?) ",
-    [req.body.Name, gender, req.body.Age],
+    [req.body.Name, Gender, req.body.Age],
     (err, data) => {
       if (err) throw err;
       res.send(data);
@@ -38,7 +38,7 @@ app.get("/:id", (req, res) => {
   getUser(id, (result) => {
     info = result;
     if (info === null) {
-      res.status(404);
+      res.status(400);
       res.senđ("Người dùng không tồn tại");
     } else {
       res.send(info);
@@ -47,7 +47,7 @@ app.get("/:id", (req, res) => {
 });
 //
 app.delete("/:id", (req, res) => {
-  connection.query(
+  Connection.query(
     "Delete from users where ID_Users = ?",
     [req.params.id],
     (err, result) => {
@@ -59,25 +59,24 @@ app.delete("/:id", (req, res) => {
   );
 });
 //
-app.put("/:id",(req, res) => {
-    get_info(id, function (result) {
-      info = result;
-      if (info === null) {
-        res.status(404);
-        res.senđ("Người dùng không tồn tại");
-      } else {
-        connection.query(
-          "update users set Name = ?, Gender = ?, Age = ? where ID_Users = ?",
-          [req.body.Name, Gender, req.body.Age, req.params.id],
-          function (err, result) {
-            if (err) throw err;
-            res.send("Updated");
-          }
-        );
-      }
-    });
-  }
-);
+app.put("/:id", (req, res) => {
+  get_info(id, function (result) {
+    info = result;
+    if (info === null) {
+      res.status(400);
+      res.senđ("Người dùng không tồn tại");
+    } else {
+      Connection.query(
+        "update users set Name = ?, Gender = ?, Age = ? where ID_Users = ?",
+        [req.body.Name, Gender, req.body.Age, req.params.id],
+        function (err, result) {
+          if (err) throw err;
+          res.send("Updated");
+        }
+      );
+    }
+  });
+});
 
 // Lắng nghe và xử lý các kết nối đến port 3000
 app.listen(3000, function () {
