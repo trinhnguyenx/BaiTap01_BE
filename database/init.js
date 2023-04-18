@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const Connection = require("./connection");
 
-
 function getUser(id, callback) {
   Connection.query(
     "select * from  where ID_Users = ?",
