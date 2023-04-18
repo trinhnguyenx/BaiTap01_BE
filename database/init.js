@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
-var Connection = require("./database");
+const Connection = require("./connection");
+
 
 function getUser(id, callback) {
   Connection.query(
@@ -15,7 +16,7 @@ function getUser(id, callback) {
   );
 }
 
-app.get("/", (req, res) => {
+app.get("/user", (req, res) => {
   let sql = "SELECT * FROM users";
   Connection.query(sql, (err, results) => {
     if (err) throw err;
@@ -23,10 +24,10 @@ app.get("/", (req, res) => {
   });
 });
 //
-app.post("/", (req, res) => {
+app.post("/user", (req, res) => {
   Connection.query(
     "insert into users (Name, Gender, Age) values (? , ? , ?) ",
-    [req.body.Name, Gender, req.body.Age],
+    [req.body.Name, req.body.Gender, req.body.Age],
     (err, data) => {
       if (err) throw err;
       res.send(data);
@@ -34,7 +35,7 @@ app.post("/", (req, res) => {
   );
 });
 //
-app.get("/:id", (req, res) => {
+app.get("/user/:id", (req, res) => {
   getUser(id, (result) => {
     info = result;
     if (info === null) {
@@ -46,7 +47,7 @@ app.get("/:id", (req, res) => {
   });
 });
 //
-app.delete("/:id", (req, res) => {
+app.delete("/user/:id", (req, res) => {
   Connection.query(
     "Delete from users where ID_Users = ?",
     [req.params.id],
@@ -59,16 +60,16 @@ app.delete("/:id", (req, res) => {
   );
 });
 //
-app.put("/:id", (req, res) => {
-  get_info(id, function (result) {
+app.put("/user/:id", (req, res) => {
+  get_info(id, (result) => {
     info = result;
     if (info === null) {
       res.status(400);
-      res.senđ("Người dùng không tồn tại");
+      res.send("Người dùng không tồn tại");
     } else {
       Connection.query(
         "update users set Name = ?, Gender = ?, Age = ? where ID_Users = ?",
-        [req.body.Name, Gender, req.body.Age, req.params.id],
+        [req.body.Name, req.body.Gender, req.body.Age, req.params.id],
         function (err, result) {
           if (err) throw err;
           res.send("Updated");
