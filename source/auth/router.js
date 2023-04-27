@@ -41,6 +41,8 @@ app.post("/register", async function (req, res) {
   );
 });
 
+//POST
+
 app.post("/login", async function (req, res) {
   const { usernamelg, passwordlg } = req.body;
   if (!usernamelg || !passwordlg) {
@@ -75,11 +77,50 @@ app.post("/login", async function (req, res) {
             .json({ message: "Invalid username or password!1" });
         }
         // Sign JWT token
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-          expiresIn: "1h",
+        const token = jwt.sign({ id: user.ID_user }, process.env.JWT_SECRET, {
+          algorithm: "HS256",
+          expiresIn: "24h",
         });
+        // console.log(user.ID_user);
         // Send response with token
         res.json({ token });
+      }
+    );
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+//PUT
+
+// Route for updating user info
+app.put("/user/:id", async function (req, res) {
+  const { name, age, gender } = req.body;
+  const userId = req.params.id;
+
+  // Validate request
+  if (!name && !age && !gender) {
+    return res.status(400).json({ message: "At least one field is required!" });
+  }
+
+  try {
+    // Verify token
+    const token = req.headers.authorization.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    if (decoded.id === userId) {
+      return res.status(401).json({ message: "Unauthorized!" });
+    }
+
+    db.query(
+      `UPDATE user SET name = ?, gender = ?, age = ? where ID_user = ?`,
+      [req.body.name, req.body.gender, req.body.age, req.params.id],
+      (err, results) => {
+        if (err) {
+          return res.status(500).json({ message: "Internal sever error !" });
+        }
+
+        // Response
+        res.json({ message: "User info updated successfully!" });
       }
     );
   } catch (error) {
