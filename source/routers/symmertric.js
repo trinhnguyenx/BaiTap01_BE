@@ -23,7 +23,7 @@ function decrypt(cipherText) {
   //Remove secret key in order to  get plain text
   const plainText = reverseStr.substring(0, reverseStr.length - SECRET.length);
   return plainText;
-}
+}                       
 
 //encrypt
 const plainText = "Trinh";

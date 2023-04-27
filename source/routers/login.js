@@ -84,11 +84,8 @@ app.get("/balance", (req, res, next) => {
   // Verify token
   try {
     //public decrypt instead of secret key
-    const isTokenValid = jsonwebtoken.verify(
-      /*userToken*/ authorizationHeader,
-      publicKey
-    );
-    console.log(JSON.stringify(isTokenValid.username));
+    const isTokenValid = jsonwebtoken.verify(userToken, publicKey);
+    // console.log(JSON.stringify(isTokenValid.username));
     // Authorization success
     if (isTokenValid.username == username) {
       const user = dbs.find((u) => u.username === username);
@@ -97,7 +94,6 @@ app.get("/balance", (req, res, next) => {
         balance: user.balance,
       });
     }
-
     // Authorization failed
     return res.status(401).json({
       message: "unauthorized",
