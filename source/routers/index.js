@@ -38,12 +38,7 @@ app.get("/user/:id", (req, res) => {
 });
 
 // update theo id
-app.put(
-  "/user/:id",
-  (req, res, next) => {
-    validate(req, res, next);
-  },
-  (req, res) => {
+app.put("/user/:id",(req, res, next) => {validate(req, res, next);},(req, res) => {
     const id = req.params.id;
     const index = data.findIndex((item) => item.id === parseInt(id));
     if (index === -1) {

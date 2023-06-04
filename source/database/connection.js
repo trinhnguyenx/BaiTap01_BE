@@ -4,7 +4,6 @@ require("dotenv").config({
   path: path.join(__dirname, ".env"),
 });
 
-// Tạo một kết nối tới cơ sở dữ liệu MySQL
 const Connection = mysql2.createConnection({
   host: process.env.HOST,
   user: process.env.USER,

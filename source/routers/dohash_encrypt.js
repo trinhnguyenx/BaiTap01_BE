@@ -3,7 +3,7 @@ const morgan = require("morgan");
 
 const app = express();
 const port = 4000;
-const authRouter = require("../auth/router");
+const authRouter = require("../auth/app");
 
 app.use(express.json());
 app.use(morgan("combined"));
