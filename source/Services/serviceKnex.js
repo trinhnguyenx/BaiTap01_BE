@@ -8,7 +8,7 @@ class UserServiceKnex {
   static async getUsers(page, limit, search) {
     try {
       const offset = (page - 1) * limit;
-      const query = db("users")
+      const query = db("user")
         .select()
         .where((builder) => {
           if (search) {
